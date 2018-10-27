@@ -1,16 +1,17 @@
 class Ships
-    constructor: (@coordinates) -> 
+    constructor: (@coordinates) ->
 
-    isAShip: (coor) -> 
+    isAShip: (coor) ->
         return coor in @coordinates
 
 class Cell
-    #value = X pour dans l'eau, 
+    #value = X pour dans l'eau,
     #T pour touché et O quand pas tirée
-    constructor: (@coordinates, @value) -> 
+    constructor: (@coordinates, @value) ->
 
-    getValue: -> 
+    getValue: ->
         return @value
 
-    getCoordinates: -> 
+    getCoordinates: ->
         return @coordinates
+
