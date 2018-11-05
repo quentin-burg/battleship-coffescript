@@ -6,7 +6,8 @@ window.startState = {
 
 
 	create: () ->
-		nameLabel = game.add.text(80, 80, 'BattleShip', { font: '50px Arial', fill: '#FFFFFF' })
+		# TODO : Fix nameLabel display
+		nameLabel = game.add.text(80, 80, 'BattleShip', { font: '50px Arial', fill: '#000000' })
 		pseudo = prompt('Votre nom')
 		console.log pseudo
 		# attend la réponse du serveur pour lancer une partie

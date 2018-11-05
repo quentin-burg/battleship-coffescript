@@ -1,6 +1,6 @@
 # Mise en place du jeu et des états
 
-window.game = new Phaser.Game(800, 800, Phaser.AUTO, '')
+window.game = new Phaser.Game(1600, 1600, Phaser.AUTO, '', {}, true)
 
 
 console.log game
