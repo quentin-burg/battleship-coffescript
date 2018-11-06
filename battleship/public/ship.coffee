@@ -40,11 +40,38 @@ window.shipState = {
 	create: () ->
 		group = game.add.group()
 		group.inputEnableChildren = true
-		shipDrag = group.create(1000, 200, 'ship')
+		shipDrag = group.create(1000, 200, 'ship2')
+		shipDrag.width = 200
+		shipDrag.height = 83
 		shipDrag.inputEnable = true
 		shipDrag.input.enableDrag()
 		shipDrag.events.onDragStart.add(onDragStart, this);
 		shipDrag.events.onDragStop.add(onDragStop, this);
+		
+		shipDrag2 = group.create(1000, 400, 'ship3')
+		shipDrag2.width = 300
+		shipDrag2.height = 125
+		shipDrag2.inputEnable = true
+		shipDrag2.input.enableDrag()
+		shipDrag2.events.onDragStart.add(onDragStart, this);
+		shipDrag2.events.onDragStop.add(onDragStop, this);
+
+		shipDrag3 = group.create(1200, 200, 'ship4')
+		shipDrag3.width = 400
+		shipDrag3.height = 166
+		shipDrag3.inputEnable = true
+		shipDrag3.input.enableDrag()
+		shipDrag3.events.onDragStart.add(onDragStart, this);
+		shipDrag3.events.onDragStop.add(onDragStop, this);
+
+		shipDrag4 = group.create(1200, 400, 'ship5')
+		shipDrag4.width = 500
+		shipDrag4.height = 208
+		shipDrag4.inputEnable = true
+		shipDrag4.input.enableDrag()
+		shipDrag4.events.onDragStart.add(onDragStart, this);
+		shipDrag4.events.onDragStop.add(onDragStop, this);
+
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)
 		drawGrid(graphics)
