@@ -20,11 +20,18 @@ drawGrid = (graphics) ->
       for j in [0..2]
         do (j) -> graphics.drawRect(i * (800 / 3), j * (800 / 3), 800 / 3, 800 / 3)
 
-drawShip = (mouseX, mouseY) ->
-  cases.forEach(( c ) ->
-    if (c.x <= mouseX and mouseX < c.x + width) and (c.y <= mouseY and mouseY < c.y + height)
-      ship = game.add.sprite(c.x + (width / 2), c.y + (height  / 2), 'ship').anchor.set(0.5)
-  )
+drawShip = (posX, posY, width, height, name, group) ->
+  # cases.forEach(( c ) ->
+  #   if (c.x <= mouseX and mouseX < c.x + width) and (c.y <= mouseY and mouseY < c.y + height)
+  #     ship = game.add.sprite(c.x + (width / 2), c.y + (height  / 2), 'ship').anchor.set(0.5)
+  # )
+	shipDrag = group.create(posX, posY, name)
+	shipDrag.width = width
+	shipDrag.height = height
+	shipDrag.inputEnable = true
+	shipDrag.input.enableDrag()
+	shipDrag.events.onDragStart.add(onDragStart, this);
+	shipDrag.events.onDragStop.add(onDragStop, this);
 
 onDragStart = (sprite, pointer) ->
 	console.log 'onDragStart'
@@ -40,43 +47,16 @@ window.shipState = {
 	create: () ->
 		group = game.add.group()
 		group.inputEnableChildren = true
-		shipDrag = group.create(1000, 200, 'ship2')
-		shipDrag.width = 200
-		shipDrag.height = 83
-		shipDrag.inputEnable = true
-		shipDrag.input.enableDrag()
-		shipDrag.events.onDragStart.add(onDragStart, this);
-		shipDrag.events.onDragStop.add(onDragStop, this);
-		
-		shipDrag2 = group.create(1000, 400, 'ship3')
-		shipDrag2.width = 300
-		shipDrag2.height = 125
-		shipDrag2.inputEnable = true
-		shipDrag2.input.enableDrag()
-		shipDrag2.events.onDragStart.add(onDragStart, this);
-		shipDrag2.events.onDragStop.add(onDragStop, this);
-
-		shipDrag3 = group.create(1200, 200, 'ship4')
-		shipDrag3.width = 400
-		shipDrag3.height = 166
-		shipDrag3.inputEnable = true
-		shipDrag3.input.enableDrag()
-		shipDrag3.events.onDragStart.add(onDragStart, this);
-		shipDrag3.events.onDragStop.add(onDragStop, this);
-
-		shipDrag4 = group.create(1200, 400, 'ship5')
-		shipDrag4.width = 500
-		shipDrag4.height = 208
-		shipDrag4.inputEnable = true
-		shipDrag4.input.enableDrag()
-		shipDrag4.events.onDragStart.add(onDragStart, this);
-		shipDrag4.events.onDragStop.add(onDragStop, this);
+		drawShip(900, 80, 200, 83, 'ship2', group)
+		drawShip(900, 250, 200, 83, 'ship3', group)
+		drawShip(900, 400, 200, 83, 'ship4', group)
+		drawShip(900, 570, 200, 83, 'ship5', group)
 
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)
 		drawGrid(graphics)
 
 	update: () ->
-		if game.input.mousePointer.isDown
-			drawShip(game.input.mousePointer.x, game.input.mousePointer.y)
+		# if game.input.mousePointer.isDown
+		# 	drawShip(game.input.mousePointer.x, game.input.mousePointer.y)
 }
