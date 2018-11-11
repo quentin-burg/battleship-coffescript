@@ -87,9 +87,9 @@ window.shipState = {
 	create: () ->
 		group = game.add.group()
 		group.inputEnableChildren = true
-		drawShip(900, 80, width - 5, 83, 'ship2', group)
-		drawShip(900, 250, (width * 2) - 5, 83, 'ship3', group)
-		drawShip(900, 400, (width * 3) - 5, 83, 'ship4', group)
+		drawShip(900, 80, width - 10, 83, 'ship2', group)
+		drawShip(900, 250, (width * 2) - 10, 83, 'ship3', group)
+		drawShip(900, 400, (width * 3) - 10, 83, 'ship4', group)
 		drawShip(900, 570, 200, 83, 'ship5', group)
 
 		graphics = game.add.graphics()

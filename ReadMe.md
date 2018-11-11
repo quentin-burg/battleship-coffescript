@@ -9,6 +9,7 @@ https://gist.github.com/woubuc/6ef002051aeef453a95b
 ## Drag and drop
 
 - dessiner un bateau lorsqu'on lache le drag@drop dans les cases correspondantes - ajouter les bateaux (4 ou 5 bateaux)
+  => Il reste à gérer qq cas d'erreur comme avoir placer tous les bateaux avant de jouer
 - verifier que deux bateaux ne soient pas sur la meme case
 
 => DESSIN BATEAUX SUR LA GRILLE
