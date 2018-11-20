@@ -39,3 +39,6 @@ https://gist.github.com/woubuc/6ef002051aeef453a95b
 # TODFOJGOER
 
 - afficher notre grille et celle ou il y a nos bateaux pour voir ou l'adeversaire joue
+
+#TODO 
+Fonction qui définie dans quelle case c'est en fonction des coordonnées

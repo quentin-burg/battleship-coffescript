@@ -3,13 +3,18 @@
 # TODO : placer des bateaux à plusieurs cases et choisir dans quel sens les mettre
 # TODO : pouvoir changer de sens les bateaux avant de les placer (horizontal ou vertical)
 
-nbCases = 6
+window.nbCases = 6
 
 alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
-cases = []
-width = 800 / nbCases
-height = 800 / nbCases
+window.cases = []
+window.width = 800 / nbCases
+window.height = 800 / nbCases
+
+posXShip2 = 80
+posXShip3 = 250
+posXShip4 = 400
+posXShip5 = 570
 
 error = false
 
@@ -22,9 +27,10 @@ createGrid = () ->
 			do (j) ->
 			raw = j + 1
 			label = letter + raw
-			coor = { x: i * (800 / nbCases), y: j * (800 / nbCases), label, hasShip: false, i, j }
+			coor = { x: i * (800 / nbCases), y: j * (800 / nbCases), label, ship: '', i, j }
 			temp.push coor
 		cases.push temp
+	console.log cases
 
 drawGrid = (graphics) ->
 	style = { font: "20px Arial", fill: "#808080", align: "center" }
@@ -60,17 +66,26 @@ onDragStop = (sprite, pointer) ->
 			if (c.x <= posX and posX < c.x + width) and (c.y <= posY and posY < c.y + height)
 				try
 					if (sprite.key is 'ship2')
-						c.hasShip = true
+						c.hasShip = sprite.key
 					else if (sprite.key is 'ship3')
-						c.hasShip = true
-						cases[c.i + 1][c.j + 1].hasShip = true
+						c.hasShip = sprite.key
+						cases[c.i + 1][c.j].hasShip = sprite.key
 					else if (sprite.key is 'ship4')
-						c.hasShip = true
-						cases[c.i + 1][c.j + 1].hasShip = true
-						cases[c.i + 2][c.j + 2].hasShip = true
+						c.hasShip = sprite.key
+						cases[c.i + 1][c.j].hasShip = sprite.key
+						cases[c.i + 2][c.j].hasShip = sprite.key
 					error = false
 				catch err
 					alert("Position invalide du bateau")
+					if (sprite.key is 'ship2')
+						sprite.destroy()
+						drawShip(900, posXShip2, width - 10, 83, 'ship2', group)
+					if (sprite.key is 'ship3')
+						sprite.destroy()
+						drawShip(900, posXShip3, (width * 2) - 10, 83, 'ship3', group)
+					if (sprite.key is 'ship4')
+						sprite.destroy()
+						drawShip(900, posXShip4, (width*3) - 10, 83, 'ship4', group)
 					error = true
 			)
 	)
@@ -78,6 +93,7 @@ onDragStop = (sprite, pointer) ->
 handleClick = () ->
 	if (not error)
 		game.state.start('play')
+	socket.emit 'shipsPositions', [window.pseudo, cases]
 
 window.shipState = {
 	preload: () ->
@@ -87,10 +103,10 @@ window.shipState = {
 	create: () ->
 		group = game.add.group()
 		group.inputEnableChildren = true
-		drawShip(900, 80, width - 10, 83, 'ship2', group)
-		drawShip(900, 250, (width * 2) - 10, 83, 'ship3', group)
-		drawShip(900, 400, (width * 3) - 10, 83, 'ship4', group)
-		drawShip(900, 570, 200, 83, 'ship5', group)
+		drawShip(900, posXShip2, width - 10, 83, 'ship2', group)
+		drawShip(900, posXShip3, (width * 2) - 10, 83, 'ship3', group)
+		drawShip(900, posXShip4, (width * 3) - 10, 83, 'ship4', group)
+		drawShip(900, posXShip5, 200, 83, 'ship5', group)
 
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)

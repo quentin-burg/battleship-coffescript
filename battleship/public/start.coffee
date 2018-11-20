@@ -7,12 +7,15 @@ window.startState = {
 		game.load.image('ship4', 'assets/boat4.png')
 		game.load.image('ship5', 'assets/boat5.png')
 		game.load.spritesheet('button', 'assets/button-arrow.png')
+		game.load.image('missile', 'assets/missile.png')
 
 
 	create: () ->
 		# TODO : Fix nameLabel display
 		nameLabel = game.add.text(80, 80, 'BattleShip', { font: '50px Arial', fill: '#000000' })
 		pseudo = prompt('Votre nom')
+		window.pseudo = pseudo
+		socket.emit 'pseudo',pseudo
 		console.log pseudo
 		# attend la réponse du serveur pour lancer une partie
 		game.state.start('ship')
