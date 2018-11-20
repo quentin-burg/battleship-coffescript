@@ -15,7 +15,7 @@ getCellByCoordinates = (x,y) ->
 		letter = 'D'
 	else if (x < 666.6)
 		letter = 'E'
-	else 
+	else
 		letter = 'F'
 	if (y < 133.3)
 		number = 1
@@ -27,7 +27,7 @@ getCellByCoordinates = (x,y) ->
 		number = 4
 	else if (y < 666.6)
 		number = 5
-	else 
+	else
 		number = 6
 	return letter + number
 
@@ -40,15 +40,15 @@ drawGrid = (graphics) ->
 				graphics.drawRect(i * (800 / nbCases), j * (800 / nbCases), 800 / nbCases, 800 / nbCases)
 				game.add.text((i * (800 / nbCases)) + width / 2, (j * (800 / nbCases)) + height / 2, cases[i][j].label, style)
 
-isACell = (x,y) -> 
+isACell = (x,y) ->
 	return (40 < x < 93 or 173 < x < 226 or 300 < x < 360 or 440 < x < 497 or 573 < x < 620 or 700 < x < 760) and (40 < y < 93 or 173 < y < 226 or 300 < y < 360 or 440 < y < 497 or 573 < y < 620 or 700 < y < 760)
 
 window.playState = {
 	preload: () ->
 		console.log 'play preload'
-		
 
-	update: () -> 
+
+	update: () ->
 		mouse = game.input.mousePointer
 		if (mouse.isDown)
 			if (isACell(mouse.positionDown.x,mouse.positionDown.y) and canPlay)
