@@ -1,5 +1,7 @@
 # Jouer à la bataille navale
 
+canPlay = true
+
 getCellByCoordinates = (x,y) ->
 	letter = ''
 	number = 0
@@ -38,6 +40,9 @@ drawGrid = (graphics) ->
 				graphics.drawRect(i * (800 / nbCases), j * (800 / nbCases), 800 / nbCases, 800 / nbCases)
 				game.add.text((i * (800 / nbCases)) + width / 2, (j * (800 / nbCases)) + height / 2, cases[i][j].label, style)
 
+isACell = (x,y) -> 
+	return (40 < x < 93 or 173 < x < 226 or 300 < x < 360 or 440 < x < 497 or 573 < x < 620 or 700 < x < 760) and (40 < y < 93 or 173 < y < 226 or 300 < y < 360 or 440 < y < 497 or 573 < y < 620 or 700 < y < 760)
+
 window.playState = {
 	preload: () ->
 		console.log 'play preload'
@@ -46,14 +51,16 @@ window.playState = {
 	update: () -> 
 		mouse = game.input.mousePointer
 		if (mouse.isDown)
-			selectedCell = getCellByCoordinates(mouse.positionDown.x,mouse.positionDown.y)
-			missile = game.add.sprite(mouse.positionDown.x, mouse.positionDown.y, 'missile');
-			missile.width = 80
-			missile.height = 80
-			socket.emit 'selectedCell', [window.pseudo,selectedCell]
+			if (isACell(mouse.positionDown.x,mouse.positionDown.y) and canPlay)
+				selectedCell = getCellByCoordinates(mouse.positionDown.x,mouse.positionDown.y)
+				missile = game.add.sprite(mouse.positionDown.x-40, mouse.positionDown.y-40, 'missile')
+				missile.width = 80
+				missile.height = 80
+				canPlay = false
+				socket.emit 'selectedCell', [window.pseudo,selectedCell]
 
 	create: () ->
-		game.add.text(400, 700, "Vous jouez contre ", style)
+		game.add.text(900, 400, "Vous jouez contre ")
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)
 		drawGrid(graphics)
