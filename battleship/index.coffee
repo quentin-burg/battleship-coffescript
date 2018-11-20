@@ -21,7 +21,6 @@ io.sockets.on('connection', (socket) ->
     socket.on 'shipsPositions', (shipsPositions) ->
         pseudo = shipsPositions[0]
         players.remove(pseudo)
-        while (players.length == 0)
         
         
 

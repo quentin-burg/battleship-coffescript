@@ -53,7 +53,7 @@ window.playState = {
 			socket.emit 'selectedCell', [window.pseudo,selectedCell]
 
 	create: () ->
-		game.add.text(400, 700, "Vous jouez contre " + ,style)
+		game.add.text(400, 700, "Vous jouez contre ", style)
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)
 		drawGrid(graphics)
