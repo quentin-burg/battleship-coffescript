@@ -19,8 +19,6 @@ createRoomId = () -> randomstring.generate(6)
 placePlayerInRoom = (playerId) ->
 	placed = false
 	for room in rooms
-		# console.log(rid)
-		# room = rooms[rid]
 		if room.status is 'empty'
 			room.player1 = { id: playerId, grid: [] }
 			room.status = 'free'
@@ -40,7 +38,6 @@ placePlayerInRoom = (playerId) ->
 
 putGridForPlayer = (playerId, grid) ->
 	for room in rooms
-		console.log room
 		if room.player1 and room.player1.id is playerId
 			room.player1.grid = grid
 		else if room.player2 and room.player2.id is playerId
@@ -60,7 +57,6 @@ getOtherGridFromShooter = (room, shooter) ->
 findCellFromGrid = (grid, cellLabel) ->
 	for rows in grid
 		for cell in rows
-			console.log 'cell', cell
 			if cell.label is cell and cell.hasShip
 				# change state of cell
 				if isFlowed(rows, cell.hasShip)
@@ -93,13 +89,9 @@ io.sockets.on('connection', (socket) ->
 	socket.on 'shipsPositions', (shipsPositions) ->
 		pseudo = shipsPositions[0]
 		putGridForPlayer(pseudo, shipsPositions[1])
-		console.log 'grid', pseudo, rooms
 	socket.on 'selectedCell', (selectedCell) ->
-		console.log 'selected', selectedCell
 		room = getRoomFromPseudo selectedCell[0]
 		getResultFromTarget selectedCell[1], room, selectedCell[0]
-		# selected [ 'ezfzfez', 'F2' ]
-		# battleshipArray = players[selectedCell[0]]
 )
 
 app.get('/', (req, res) -> res.sendFile(path.join __dirname, 'public', 'index.html'))
