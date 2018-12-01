@@ -12,29 +12,30 @@ server.listen(3000)
 
 
 players = []
-rooms = {}
+rooms = []
 # rooms = { "id": {"status" : "empty" || "free" || "full"}, "player1": "p1", "player2": "p2" }
 createRoomId = () -> randomstring.generate(6)
 
 placePlayerInRoom = (playerId) ->
 	placed = false
-	for rid in rooms.keys()
-		do (rid) ->
-			room = rooms[rid]
-			if room.status is 'empty'
-				room.player1 = { id: playerId, grid: [] }
-				room.status = 'free'
-				placed = r
-			else if room.status is 'free'
-				room.player2 = { id: playerId, grid: [] }
-				room.status = 'full'
-				placed = r
+	console.log(rooms)
+	for rid in rooms
+		console.log(rid)
+		room = rooms[rid]
+		if room.status is 'empty'
+			room.player1 = { id: playerId, grid: [] }
+			room.status = 'free'
+			placed = r
+		else if room.status is 'free'
+			room.player2 = { id: playerId, grid: [] }
+			room.status = 'full'
+			placed = r
 	if !placed
 		roomId = createRoomId()
-		newRoom = {}
+		newRoom = {roomId: roomId}
 		newRoom.player1 = { id: playerId, grid: [] }
 		newRoom.status = 'free'
-		rooms[roomId] = newRoom
+		rooms.push newRoom
 		return roomId
 	return placed
 
