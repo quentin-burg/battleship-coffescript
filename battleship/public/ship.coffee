@@ -77,6 +77,8 @@ onDragStop = (sprite, pointer) ->
 					error = false
 				catch err
 					alert("Position invalide du bateau")
+					group = game.add.group()
+					group.inputEnableChildren = true
 					if (sprite.key is 'ship2')
 						sprite.destroy()
 						drawShip(900, posXShip2, width - 10, 83, 'ship2', group)
