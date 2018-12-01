@@ -18,30 +18,71 @@ createRoomId = () -> randomstring.generate(6)
 
 placePlayerInRoom = (playerId) ->
 	placed = false
-	console.log(rooms)
-	for rid in rooms
-		console.log(rid)
-		room = rooms[rid]
+	for room in rooms
+		# console.log(rid)
+		# room = rooms[rid]
 		if room.status is 'empty'
 			room.player1 = { id: playerId, grid: [] }
 			room.status = 'free'
-			placed = r
+			placed = true
 		else if room.status is 'free'
 			room.player2 = { id: playerId, grid: [] }
 			room.status = 'full'
-			placed = r
+			placed = true
 	if !placed
 		roomId = createRoomId()
-		newRoom = {roomId: roomId}
+		newRoom = { roomId: roomId }
 		newRoom.player1 = { id: playerId, grid: [] }
 		newRoom.status = 'free'
 		rooms.push newRoom
 		return roomId
 	return placed
 
-# putGridForPlayer = (playerId) ->
+putGridForPlayer = (playerId, grid) ->
+	for room in rooms
+		console.log room
+		if room.player1 and room.player1.id is playerId
+			room.player1.grid = grid
+		else if room.player2 and room.player2.id is playerId
+			room.player2.grid = grid
+
+getRoomFromPseudo = (playerId) ->
+	for room in rooms
+		if room.player1.id is playerId || room.player2.id is playerId
+			return room
+
+getOtherGridFromShooter = (room, shooter) ->
+	if room.player1.id is shooter
+		return room.player2.grid
+	else if room.player2.id is shooter
+		return room.player1.grid
+
+findCellFromGrid = (grid, cellLabel) ->
+	for rows in grid
+		for cell in rows
+			console.log 'cell', cell
+			if cell.label is cell and cell.hasShip
+				# change state of cell
+				if isFlowed(rows, cell.hasShip)
+					return 'C'
+				cell.state = 'T'
+				return 'T'
+			else
+				return 'O'
+
+isFlowed = (rows, shipId) ->
+	# la taille que prend un bateau est dans son nom (ship2 prend 2 cases)
+	n = shipId.split('ship')[1]
+	for cell in rows
+		if cell.hasShip is shipId and cell.state is 'T'
+			n = n - 1
+	return n <= 0
 
 
+getResultFromTarget = (targetCell, room, shooter) ->
+	targetGrid = getOtherGridFromShooter(room, shooter)
+	result = findCellFromGrid(targetGrid, targetCell)
+	io.to(room.roomId).emit('resultShoot', { result, cell: targetCell })
 
 io.sockets.on('connection', (socket) ->
 	console.log ('new user')
@@ -51,9 +92,14 @@ io.sockets.on('connection', (socket) ->
 		socket.join(roomId)
 	socket.on 'shipsPositions', (shipsPositions) ->
 		pseudo = shipsPositions[0]
-		# putGridForPlayer
+		putGridForPlayer(pseudo, shipsPositions[1])
+		console.log 'grid', pseudo, rooms
 	socket.on 'selectedCell', (selectedCell) ->
-		battleshipArray = players[selectedCell[0]]
+		console.log 'selected', selectedCell
+		room = getRoomFromPseudo selectedCell[0]
+		getResultFromTarget selectedCell[1], room, selectedCell[0]
+		# selected [ 'ezfzfez', 'F2' ]
+		# battleshipArray = players[selectedCell[0]]
 )
 
 app.get('/', (req, res) -> res.sendFile(path.join __dirname, 'public', 'index.html'))
