@@ -10,6 +10,7 @@ console.log game
 game.state.add('start', startState)
 game.state.add('ship', shipState)
 game.state.add('play', playState)
+game.state.add('end', endState)
 
 game.state.start('start')
 

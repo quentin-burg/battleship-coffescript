@@ -2,12 +2,15 @@
 window.startState = {
 	preload: () ->
 		console.log 'preload', game
+		game.load.image('ship1', 'assets/boat1.png')
 		game.load.image('ship2', 'assets/boat2.png')
 		game.load.image('ship3', 'assets/boat3.png')
-		game.load.image('ship4', 'assets/boat4.png')
 		game.load.image('ship5', 'assets/boat5.png')
 		game.load.spritesheet('button', 'assets/button-arrow.png')
 		game.load.image('missile', 'assets/missile.png')
+		game.load.image('water', 'assets/water.png')
+		game.load.image('explosion', 'assets/explosion.png')
+		game.load.image('wreckship', 'assets/wreckship.png')
 
 
 	create: () ->

@@ -13,6 +13,7 @@ server.listen(3000)
 
 players = []
 rooms = []
+touchedShips = 0
 # rooms = { "id": {"status" : "empty" || "free" || "full"}, "player1": "p1", "player2": "p2" }
 createRoomId = () -> randomstring.generate(6)
 
@@ -55,30 +56,34 @@ getOtherGridFromShooter = (room, shooter) ->
 		return room.player1.grid
 
 findCellFromGrid = (grid, cellLabel) ->
-	for rows in grid
-		for cell in rows
-			if cell.label is cell and cell.hasShip
-				# change state of cell
-				if isFlowed(rows, cell.hasShip)
-					return 'C'
-				cell.state = 'T'
-				return 'T'
-			else
-				return 'O'
+	for column in grid
+		for cell in column
+			if cell.label is cellLabel
+				if cell.hasShip
+					# change state of cell
+					cell.state = 'T'
+					if isFlowed(grid, cell.hasShip)
+						return 'C'
+					return 'T'
+				else
+					return 'O'
 
-isFlowed = (rows, shipId) ->
+isFlowed = (grid, shipId) ->
 	# la taille que prend un bateau est dans son nom (ship2 prend 2 cases)
 	n = shipId.split('ship')[1]
-	for cell in rows
-		if cell.hasShip is shipId and cell.state is 'T'
-			n = n - 1
-	return n <= 0
+	for column in grid
+		for cell in column
+			if cell.hasShip is shipId and cell.state is 'T'
+				n = n - 1
+			if n == 0
+				return true
+	return false
 
 
-getResultFromTarget = (targetCell, room, shooter) ->
+getResultFromTarget = (targetCell, room, shooter, socket) ->
 	targetGrid = getOtherGridFromShooter(room, shooter)
 	result = findCellFromGrid(targetGrid, targetCell)
-	io.to(room.roomId).emit('resultShoot', { result, cell: targetCell })
+	socket.emit('resultShoot', { result, cell: targetCell })
 
 io.sockets.on('connection', (socket) ->
 	console.log ('new user')
@@ -91,7 +96,7 @@ io.sockets.on('connection', (socket) ->
 		putGridForPlayer(pseudo, shipsPositions[1])
 	socket.on 'selectedCell', (selectedCell) ->
 		room = getRoomFromPseudo selectedCell[0]
-		getResultFromTarget selectedCell[1], room, selectedCell[0]
+		getResultFromTarget selectedCell[1], room, selectedCell[0], socket
 )
 
 app.get('/', (req, res) -> res.sendFile(path.join __dirname, 'public', 'index.html'))

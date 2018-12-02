@@ -1,6 +1,7 @@
 # Jouer à la bataille navale
 
 canPlay = true
+sprite = "";
 
 getCellByCoordinates = (x,y) ->
 	letter = ''
@@ -31,6 +32,27 @@ getCellByCoordinates = (x,y) ->
 		number = 6
 	return letter + number
 
+getCoordinatesByCell = (cell) -> 
+	letter = cell[0]
+	number = cell[1]
+	x = 0
+	y = 0
+	switch letter
+		when "A" then x = 40
+		when "B" then x = 173
+		when "C" then x = 300
+		when "D" then x = 440
+		when "E" then x = 573
+		else x = 700
+	switch number
+		when "1" then y = 40
+		when "2" then y = 173
+		when "3" then y = 300
+		when "4" then y = 440
+		when "5" then y = 573
+		else y = 700
+	return [x,y]
+
 drawGrid = (graphics) ->
 	style = { font: "20px Arial", fill: "#808080", align: "center" }
 	for i in [0..nbCases - 1]
@@ -49,21 +71,52 @@ window.playState = {
 
 
 	update: () ->
+	
 		mouse = game.input.mousePointer
+		event = socket.on 'resultShoot', (resultShoot) -> 
+			coordinates = getCoordinatesByCell resultShoot.cell
+			x = coordinates[0]
+			y = coordinates[1]
+			if resultShoot.result is "O" 
+				sprite.destroy()
+				water = game.add.sprite(x, y, 'water')
+				water.width = 80
+				water.height = 80
+			else if resultShoot.result is "T"
+				sprite.destroy()
+				explosion = game.add.sprite(x, y, 'explosion')
+				explosion.width = 80
+				explosion.height = 80
+			else if resultShoot.result is "C"
+				sprite.destroy()
+				wreckship = game.add.sprite(x, y, 'wreckship')
+				wreckship.width = 80
+				wreckship.height = 80
+				if !(resultShoot.cell in touchedShips)
+					window.touchedShips.push(resultShoot.cell)
+					if (window.touchedShips.length is 3)
+						game.state.start('end')
+			canPlay = true
+			
+					
+				
 		if (mouse.isDown)
 			if (isACell(mouse.positionDown.x,mouse.positionDown.y) and canPlay)
 				selectedCell = getCellByCoordinates(mouse.positionDown.x,mouse.positionDown.y)
 				missile = game.add.sprite(mouse.positionDown.x-40, mouse.positionDown.y-40, 'missile')
+				sprite = missile
 				missile.width = 80
 				missile.height = 80
 				canPlay = false
 				socket.emit 'selectedCell', [window.pseudo,selectedCell]
+		
 
 	create: () ->
 		game.add.text(900, 400, "Vous jouez contre ")
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)
 		drawGrid(graphics)
+		window.touchedShips = []
 
 
 

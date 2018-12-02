@@ -11,10 +11,9 @@ window.cases = []
 window.width = 800 / nbCases
 window.height = 800 / nbCases
 
-posXShip2 = 80
-posXShip3 = 250
-posXShip4 = 400
-posXShip5 = 570
+posXShip1 = 80
+posXShip2 = 250
+posXShip3 = 400
 
 error = false
 
@@ -58,19 +57,19 @@ onDragStart = (sprite, pointer) ->
 	console.log 'onDragStart'
 
 onDragStop = (sprite, pointer) ->
-	console.log 'onDragStop', sprite
+	console.log 'onDragStop'
 	posX = sprite.position.x
 	posY = sprite.position.y
 	cases.forEach(( raw ) ->
 		raw.forEach(( c ) ->
 			if (c.x <= posX and posX < c.x + width) and (c.y <= posY and posY < c.y + height)
 				try
-					if (sprite.key is 'ship2')
+					if (sprite.key is 'ship1')
 						c.hasShip = sprite.key
-					else if (sprite.key is 'ship3')
+					else if (sprite.key is 'ship2')
 						c.hasShip = sprite.key
 						cases[c.i + 1][c.j].hasShip = sprite.key
-					else if (sprite.key is 'ship4')
+					else if (sprite.key is 'ship3')
 						c.hasShip = sprite.key
 						cases[c.i + 1][c.j].hasShip = sprite.key
 						cases[c.i + 2][c.j].hasShip = sprite.key
@@ -79,15 +78,15 @@ onDragStop = (sprite, pointer) ->
 					alert("Position invalide du bateau")
 					group = game.add.group()
 					group.inputEnableChildren = true
+					if (sprite.key is 'ship1')
+						sprite.destroy()
+						drawShip(900, posXShip1, width - 10, 83, 'ship1', group)
 					if (sprite.key is 'ship2')
 						sprite.destroy()
-						drawShip(900, posXShip2, width - 10, 83, 'ship2', group)
+						drawShip(900, posXShip2, (width * 2) - 10, 83, 'ship2', group)
 					if (sprite.key is 'ship3')
 						sprite.destroy()
-						drawShip(900, posXShip3, (width * 2) - 10, 83, 'ship3', group)
-					if (sprite.key is 'ship4')
-						sprite.destroy()
-						drawShip(900, posXShip4, (width*3) - 10, 83, 'ship4', group)
+						drawShip(900, posXShip3, (width*3) - 10, 83, 'ship3', group)
 					error = true
 			)
 	)
@@ -105,10 +104,9 @@ window.shipState = {
 	create: () ->
 		group = game.add.group()
 		group.inputEnableChildren = true
-		drawShip(900, posXShip2, width - 10, 83, 'ship2', group)
-		drawShip(900, posXShip3, (width * 2) - 10, 83, 'ship3', group)
-		drawShip(900, posXShip4, (width * 3) - 10, 83, 'ship4', group)
-		drawShip(900, posXShip5, 200, 83, 'ship5', group)
+		drawShip(900, posXShip1, width - 10, 83, 'ship1', group)
+		drawShip(900, posXShip2, (width * 2) - 10, 83, 'ship2', group)
+		drawShip(900, posXShip3, (width * 3) - 10, 83, 'ship3', group)
 
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)
