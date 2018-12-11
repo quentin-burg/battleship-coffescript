@@ -51,7 +51,8 @@ putGridForPlayer = (playerId, grid) ->
 
 getRoomFromPseudo = (playerId) ->
 	for room in rooms
-		if (room.player1 and (room.player1.id is playerId) || (room.player2 and (room.player2.id is playerId)))
+		if (room.player1 and (room.player1.id is playerId) ||
+		(room.player2 and (room.player2.id is playerId)))
 			return room
 
 getOtherPlayerFromPlayerId = (room, playerId) ->

@@ -62,10 +62,13 @@ drawGrid = (graphics) ->
 		for j in [0..nbCases - 1]
 			do (j) ->
 				graphics.drawRect(i * (800 / nbCases), j * (800 / nbCases), 800 / nbCases, 800 / nbCases)
-				game.add.text((i * (800 / nbCases)) + width / 2, (j * (800 / nbCases)) + height / 2, cases[i][j].label, style)
+				game.add.text((i * (800 / nbCases)) + width / 2,
+				(j * (800 / nbCases)) + height / 2, cases[i][j].label, style)
 
 isACell = (x, y) ->
-	return (40 < x < 93 or 173 < x < 226 or 300 < x < 360 or 440 < x < 497 or 573 < x < 620 or 700 < x < 760) and (40 < y < 93 or 173 < y < 226 or 300 < y < 360 or 440 < y < 497 or 573 < y < 620 or 700 < y < 760)
+	return (40 < x < 93 or 173 < x < 226 or 300 < x < 360 or 440 < x < 497 or
+	573 < x < 620 or 700 < x < 760) and (40 < y < 93 or 173 < y < 226 or
+	300 < y < 360 or 440 < y < 497 or 573 < y < 620 or 700 < y < 760)
 
 window.playState = {
 	preload: () ->

@@ -45,7 +45,8 @@ update = () ->
     drawShip(game.input.mousePointer.x, game.input.mousePointer.y)
     # game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y, 'ship').anchor.set(0.5)
 
-game = new Phaser.Game(800, 800, Phaser.AUTO, '', { create: create , preload: preload, update: update }, true)
+game = new Phaser.Game(800, 800, Phaser.AUTO, '',
+      { create: create , preload: preload, update: update }, true)
 
 
 

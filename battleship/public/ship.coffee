@@ -5,7 +5,7 @@
 
 window.nbCases = 6
 
-alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+alphabet = ['A', 'B', 'C', 'D', 'E', 'F','G','H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 window.cases = []
 window.width = 800 / nbCases
@@ -38,7 +38,8 @@ drawGrid = (graphics) ->
 		for j in [0..nbCases - 1]
 			do (j) ->
 				graphics.drawRect(i * (800 / nbCases), j * (800 / nbCases), 800 / nbCases, 800 / nbCases)
-				game.add.text((i * (800 / nbCases)) + width / 2, (j * (800 / nbCases)) + height / 2, cases[i][j].label, style)
+				game.add.text((i * (800 / nbCases)) + width / 2,
+				(j * (800 / nbCases)) + height / 2, cases[i][j].label, style)
 
 drawShip = (posX, posY, width, height, name, group) ->
   # cases.forEach(( c ) ->
