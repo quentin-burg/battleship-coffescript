@@ -19,17 +19,21 @@ createRoomId = () -> randomstring.generate(6)
 
 placePlayerInRoom = (playerId, socket) ->
 	placed = false
+	console.log 'player Id' + playerId
 	for room in rooms
 		if room.status is 'empty'
+			console.log 'room empty'
 			# regarder si ce if est utile
 			room.player1 = { id: playerId, grid: [], socket }
 			room.status = 'free'
 			placed = true
 		else if room.status is 'free'
+			console.log 'room free'
 			room.player2 = { id: playerId, grid: [], socket }
 			room.status = 'full'
 			placed = true
 	if !placed
+		console.log 'new room'
 		roomId = createRoomId()
 		newRoom = { roomId: roomId }
 		newRoom.player1 = { id: playerId, grid: [], socket }
@@ -47,15 +51,17 @@ putGridForPlayer = (playerId, grid) ->
 
 getRoomFromPseudo = (playerId) ->
 	for room in rooms
-		if room.player1.id is playerId || room.player2.id is playerId
+		if (room.player1 and (room.player1.id is playerId) || (room.player2 and (room.player2.id is playerId)))
 			return room
 
-getOtherGridFromShooter = (room, shooter) ->
-	if room.player1.id is shooter
-		return room.player2.grid
-	else if room.player2.id is shooter
-		return room.player1.grid
+getOtherPlayerFromPlayerId = (room, playerId) ->
+	if room.status is 'full'
+		if room.player1.id is playerId
+			return room.player2
+		else if room.player2.id is playerId
+			return room.player1
 
+# TP
 findCellFromGrid = (grid, cellLabel) ->
 	for column in grid
 		for cell in column
@@ -69,6 +75,7 @@ findCellFromGrid = (grid, cellLabel) ->
 				else
 					return 'O'
 
+# TP
 isFlowed = (grid, shipId) ->
 	# la taille que prend un bateau est dans son nom (ship2 prend 2 cases)
 	n = shipId.split('ship')[1]
@@ -80,45 +87,64 @@ isFlowed = (grid, shipId) ->
 				return true
 	return false
 
-# playerIsReadyToPlay = (pseudo) ->
-# 	room = getRoomFromPseudo(pseudo)
-# 	return room.status is "full"
-
 getEnemy = (pseudo) ->
 	room = getRoomFromPseudo(pseudo)
 	return if room.player1.id is pseudo then room.player2.id else room.player1.id
 
+# TP
 getResultFromTarget = (targetCell, room, shooter, socket) ->
-	targetGrid = getOtherGridFromShooter(room, shooter)
+	targetPlayer = getOtherPlayerFromPlayerId(room, shooter)
+	targetGrid = targetPlayer.grid
 	result = findCellFromGrid(targetGrid, targetCell)
-	socket.emit('resultShoot', { result, cell: targetCell})
+	socket.emit('resultShoot', { result, cell: targetCell })
+	targetPlayer.socket.emit('canPlay')
 
-getPlayerFromId = (playerId) ->
+# getPlayerFromId = (playerId) ->
+# 	for room in rooms
+# 		return if room.player1.id is playerId then room.player1 else romm.player2
+
+sendEnemy = (playerId) ->
+	room = getRoomFromPseudo(playerId)
+	if room.status is 'full'
+		room.player1.socket.emit('readyToPlay', getEnemy(room.player1.id))
+		room.player2.socket.emit('readyToPlay', getEnemy(room.player2.id))
+		# par dafaut le joueur qui début est le joueur 1
+		room.player1.socket.emit('canPlay')
+
+getRoomFromSocketId = (socketId) ->
 	for room in rooms
-		return if room.player1.id is playerId then room.player1 else romm.player2
+		if room.player1 and room.player1.socket.id is socketId
+			return { room, player: room.player1 }
+		else if room.player2 and room.player2.socket.id is socketId
+			return { room, player: room.player2 }
+	console.log('no room found')
+	return { room: null, player: null }
 
-
-# sendEnemy = (playerId) ->
-
-
-
-
+removeRoom = (socketId) ->
+	{ room, player } = getRoomFromSocketId(socketId)
+	console.log('PLAY', player)
+	if player then otherPlayer = getOtherPlayerFromPlayerId(room, player.id)
+	console.log 'otherPlayer', otherPlayer
+	if otherPlayer then otherPlayer.socket.emit('endOfGame')
+	if room then rooms.splice(rooms.indexOf(room), 1)
 
 
 
 io.sockets.on('connection', (socket) ->
-	console.log ('new user')
+	console.log ('Nouvel utilisateur connecté')
 	socket.on 'pseudo', (pseudo) ->
-		players.push({pseudo: pseudo, socket: socket})
 		roomId = placePlayerInRoom(pseudo, socket)
 	socket.on 'shipsPositions', (shipsPositions) ->
 		pseudo = shipsPositions[0]
-		# io.to(getRoomFromPseudo(pseudo).roomId).emit('readyToPlay', getEnemy(pseudo))
-		socket.emit('readyToPlay', getEnemy(pseudo))
+		sendEnemy(pseudo)
 		putGridForPlayer(pseudo, shipsPositions[1])
+	# TP
 	socket.on 'selectedCell', (selectedCell) ->
 		room = getRoomFromPseudo selectedCell[0]
 		getResultFromTarget selectedCell[1], room, selectedCell[0], socket
+	socket.on 'disconnect', () ->
+		console.log 'disconnect server'
+		removeRoom(socket.id)
 
 )
 

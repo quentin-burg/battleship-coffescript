@@ -86,7 +86,7 @@ onDragStop = (sprite, pointer) ->
 						drawShip(900, posXShip2, (width * 2) - 10, 83, 'ship2', group)
 					if (sprite.key is 'ship3')
 						sprite.destroy()
-						drawShip(900, posXShip3, (width*3) - 10, 83, 'ship3', group)
+						drawShip(900, posXShip3, (width * 3) - 10, 83, 'ship3', group)
 					error = true
 			)
 	)
@@ -104,9 +104,9 @@ window.shipState = {
 	create: () ->
 		group = game.add.group()
 		group.inputEnableChildren = true
-		drawShip(900, posXShip1, width - 10, 83, 'ship1', group)
-		drawShip(900, posXShip2, (width * 2) - 10, 83, 'ship2', group)
-		drawShip(900, posXShip3, (width * 3) - 10, 83, 'ship3', group)
+		drawShip(900, posXShip1, width - 50, 83, 'ship1', group)
+		drawShip(900, posXShip2, (width * 2) - 50, 83, 'ship2', group)
+		drawShip(900, posXShip3, (width * 3) - 50, 83, 'ship3', group)
 
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)
@@ -115,6 +115,11 @@ window.shipState = {
 		button.width = 50
 		button.height = 50
 
+		socket.on 'disconnected', () ->
+			console.log('disconnected SHIP state')
+			# socket.emit('disconnectFromClient', pseudo)
+		socket.on 'endOfGame', () ->
+			game.state.start('end')
 	update: () ->
 		# if game.input.mousePointer.isDown
 		# 	drawShip(game.input.mousePointer.x, game.input.mousePointer.y)
