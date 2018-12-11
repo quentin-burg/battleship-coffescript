@@ -83,12 +83,12 @@ isFlowed = (grid, shipId) ->
 getResultFromTarget = (targetCell, room, shooter, socket) ->
 	targetGrid = getOtherGridFromShooter(room, shooter)
 	result = findCellFromGrid(targetGrid, targetCell)
-	socket.emit('resultShoot', { result, cell: targetCell })
+	socket.emit('resultShoot', { result, cell: targetCell})
 
 io.sockets.on('connection', (socket) ->
 	console.log ('new user')
 	socket.on 'pseudo', (pseudo) ->
-		players.push(pseudo)
+		players.push({pseudo: pseudo, socket: socket})
 		roomId = placePlayerInRoom(pseudo)
 		socket.join(roomId)
 	socket.on 'shipsPositions', (shipsPositions) ->
@@ -97,6 +97,7 @@ io.sockets.on('connection', (socket) ->
 	socket.on 'selectedCell', (selectedCell) ->
 		room = getRoomFromPseudo selectedCell[0]
 		getResultFromTarget selectedCell[1], room, selectedCell[0], socket
+
 )
 
 app.get('/', (req, res) -> res.sendFile(path.join __dirname, 'public', 'index.html'))

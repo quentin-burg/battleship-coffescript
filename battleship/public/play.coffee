@@ -71,9 +71,11 @@ window.playState = {
 
 
 	update: () ->
-	
+		socket.on 'canPlay', (res) ->
+			window.canPlay = res.canPlay
+
 		mouse = game.input.mousePointer
-		event = socket.on 'resultShoot', (resultShoot) -> 
+		event = socket.on 'resultShoot', (resultShoot) ->
 			coordinates = getCoordinatesByCell resultShoot.cell
 			x = coordinates[0]
 			y = coordinates[1]
@@ -96,9 +98,7 @@ window.playState = {
 					window.touchedShips.push(resultShoot.cell)
 					if (window.touchedShips.length is 3)
 						game.state.start('end')
-			canPlay = true
-			
-					
+			window.canPlay = false
 				
 		if (mouse.isDown)
 			if (isACell(mouse.positionDown.x,mouse.positionDown.y) and canPlay)
