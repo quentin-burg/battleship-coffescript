@@ -1,7 +1,7 @@
 # Jouer à la bataille navale
 
 canPlay = true
-sprite = "";
+sprite = ""
 
 getCellByCoordinates = (x,y) ->
 	letter = ''
@@ -32,7 +32,7 @@ getCellByCoordinates = (x,y) ->
 		number = 6
 	return letter + number
 
-getCoordinatesByCell = (cell) -> 
+getCoordinatesByCell = (cell) ->
 	letter = cell[0]
 	number = cell[1]
 	x = 0
@@ -71,6 +71,7 @@ window.playState = {
 
 
 	update: () ->
+		# fonctionne pas
 		socket.on 'canPlay', (res) ->
 			window.canPlay = res.canPlay
 
@@ -79,7 +80,7 @@ window.playState = {
 			coordinates = getCoordinatesByCell resultShoot.cell
 			x = coordinates[0]
 			y = coordinates[1]
-			if resultShoot.result is "O" 
+			if resultShoot.result is "O"
 				sprite.destroy()
 				water = game.add.sprite(x, y, 'water')
 				water.width = 80
@@ -99,7 +100,7 @@ window.playState = {
 					if (window.touchedShips.length is 3)
 						game.state.start('end')
 			window.canPlay = false
-				
+
 		if (mouse.isDown)
 			if (isACell(mouse.positionDown.x,mouse.positionDown.y) and canPlay)
 				selectedCell = getCellByCoordinates(mouse.positionDown.x,mouse.positionDown.y)
@@ -109,10 +110,12 @@ window.playState = {
 				missile.height = 80
 				canPlay = false
 				socket.emit 'selectedCell', [window.pseudo,selectedCell]
-		
+
 
 	create: () ->
-		game.add.text(900, 400, "Vous jouez contre ")
+		socket.on('readyToPlay', (enemy) ->
+			game.add.text(900, 400, "Vous jouez contre " + enemy)
+		)
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)
 		drawGrid(graphics)
