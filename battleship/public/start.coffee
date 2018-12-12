@@ -18,9 +18,9 @@ window.startState = {
 		nameLabel = game.add.text(80, 80, 'BattleShip', { font: '50px Arial', fill: '#000000' })
 		pseudo = prompt('Votre nom')
 		window.pseudo = pseudo
+		# on transmet au serveur le pseudo du joueur
 		socket.emit 'pseudo', pseudo
-		console.log pseudo
-		# attend la réponse du serveur pour lancer une partie
+		# on lance l'état du jeu suivant : le placement des bateaux
 		game.state.start('ship')
 
 }

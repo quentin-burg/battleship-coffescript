@@ -19,7 +19,6 @@ createRoomId = () -> randomstring.generate(6)
 
 placePlayerInRoom = (playerId, socket) ->
 	placed = false
-	console.log 'player Id' + playerId
 	for room in rooms
 		if room.status is 'empty'
 			console.log 'room empty'
@@ -113,19 +112,18 @@ sendEnemy = (playerId) ->
 		room.player1.socket.emit('canPlay')
 
 getRoomFromSocketId = (socketId) ->
+	# TO FIX : amélioration de cette fonction
 	for room in rooms
 		if room.player1 and room.player1.socket.id is socketId
 			return { room, player: room.player1 }
 		else if room.player2 and room.player2.socket.id is socketId
 			return { room, player: room.player2 }
-	console.log('no room found')
+	console.log('Room not found')
 	return { room: null, player: null }
 
 removeRoom = (socketId) ->
 	{ room, player } = getRoomFromSocketId(socketId)
-	console.log('PLAY', player)
 	if player then otherPlayer = getOtherPlayerFromPlayerId(room, player.id)
-	console.log 'otherPlayer', otherPlayer
 	if otherPlayer then otherPlayer.socket.emit('endOfGame')
 	if room then rooms.splice(rooms.indexOf(room), 1)
 
@@ -144,7 +142,7 @@ io.sockets.on('connection', (socket) ->
 		room = getRoomFromPseudo selectedCell[0]
 		getResultFromTarget selectedCell[1], room, selectedCell[0], socket
 	socket.on 'disconnect', () ->
-		console.log 'disconnect server'
+		console.log 'Socket disconnected from server'
 		removeRoom(socket.id)
 
 )

@@ -18,6 +18,7 @@ posXShip3 = 400
 error = false
 
 createGrid = () ->
+	# TO FIX : améliorer la boucle
 	for i in [0 .. nbCases - 1]
 		do (i) ->
 		temp = []
@@ -33,6 +34,7 @@ createGrid = () ->
 
 drawGrid = (graphics) ->
 	style = { font: "20px Arial", fill: "#808080", align: "center" }
+	# TO FIX : améliorer la boucle
 	for i in [0..nbCases - 1]
 		do (i) ->
 		for j in [0..nbCases - 1]
@@ -94,15 +96,19 @@ onDragStop = (sprite, pointer) ->
 
 handleClick = () ->
 	if (not error)
+		# on lance l'état suivant du jeu : la bataille
 		game.state.start('play')
+	# TO FIX : transformer en objet et retirer window
 	socket.emit 'shipsPositions', [window.pseudo, cases]
 
 window.shipState = {
 	preload: () ->
 		console.log 'preload ship'
+		# on dessine la grille
 		createGrid()
 
 	create: () ->
+		# on dessine les différents bateaux et le bouton
 		group = game.add.group()
 		group.inputEnableChildren = true
 		drawShip(900, posXShip1, width - 50, 83, 'ship1', group)
@@ -112,16 +118,15 @@ window.shipState = {
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)
 		drawGrid(graphics)
+		# TO FIX : remonter le bouton pour ne pas avoir à dézommer
 		button = game.add.button(1000, 900, 'button', handleClick)
 		button.width = 50
 		button.height = 50
 
+		# Event reçu si la socket coté client est déconnectée
 		socket.on 'disconnected', () ->
-			console.log('disconnected SHIP state')
-			# socket.emit('disconnectFromClient', pseudo)
+			console.log('Socket client disconnected')
+		# Si l'adversaire se déconnecte, la partie prend fin (on reçoit enOfGame du serveur)
 		socket.on 'endOfGame', () ->
 			game.state.start('end')
-	update: () ->
-		# if game.input.mousePointer.isDown
-		# 	drawShip(game.input.mousePointer.x, game.input.mousePointer.y)
 }
