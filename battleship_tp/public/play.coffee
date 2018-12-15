@@ -81,31 +81,32 @@ window.playState = {
 			canPlay = true
 
 		mouse = game.input.mousePointer
-		event = socket.on 'resultShoot', (resultShoot) ->
-			coordinates = getCoordinatesByCell resultShoot.cell
-			x = coordinates.x
-			y = coordinates.y
-			if resultShoot.result is "O"
-				sprite.destroy()
-				water = game.add.sprite(x, y, 'water')
-				water.width = 80
-				water.height = 80
-			else if resultShoot.result is "T"
-				sprite.destroy()
-				explosion = game.add.sprite(x, y, 'explosion')
-				explosion.width = 80
-				explosion.height = 80
-			else if resultShoot.result is "C"
-				sprite.destroy()
-				wreckship = game.add.sprite(x, y, 'wreckship')
-				wreckship.width = 80
-				wreckship.height = 80
-				if !(resultShoot.cell in touchedShips)
-					window.touchedShips.push(resultShoot.cell)
-					if (window.touchedShips.length is 3)
-						game.state.start('end')
-			canPlay = false
+		# event = socket.on 'resultShoot', (resultShoot) ->
+		# 	coordinates = getCoordinatesByCell resultShoot.cell
+		# 	x = coordinates.x
+		# 	y = coordinates.y
+		# 	if resultShoot.result is "O"
+		# 		sprite.destroy()
+		# 		water = game.add.sprite(x, y, 'water')
+		# 		water.width = 80
+		# 		water.height = 80
+		# 	else if resultShoot.result is "T"
+		# 		sprite.destroy()
+		# 		explosion = game.add.sprite(x, y, 'explosion')
+		# 		explosion.width = 80
+		# 		explosion.height = 80
+		# 	else if resultShoot.result is "C"
+		# 		sprite.destroy()
+		# 		wreckship = game.add.sprite(x, y, 'wreckship')
+		# 		wreckship.width = 80
+		# 		wreckship.height = 80
+		# 		if !(resultShoot.cell in touchedShips)
+		# 			window.touchedShips.push(resultShoot.cell)
+		# 			if (window.touchedShips.length is 3)
+		# 				game.state.start('end')
+		# 	canPlay = false
 
+		#Question 3
 		if (mouse.isDown)
 			if (isACell(mouse.positionDown.x, mouse.positionDown.y) and canPlay)
 				selectedCell = getCellByCoordinates(mouse.positionDown.x, mouse.positionDown.y)
@@ -115,6 +116,7 @@ window.playState = {
 				missile.height = 80
 				canPlay = false
 				socket.emit 'selectedCell', { pseudo: pseudo, cell: selectedCell }
+		#Question 3
 
 	# TP
 	create: () ->

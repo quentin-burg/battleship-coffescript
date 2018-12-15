@@ -62,42 +62,42 @@ getOtherPlayerFromPlayerId = (room, playerId) ->
 			return room.player1
 
 # TP
-findCellFromGrid = (grid, cellLabel) ->
-	for column in grid
-		for cell in column
-			if cell.label is cellLabel
-				if cell.hasShip
-					# change state of cell
-					cell.state = 'T'
-					if isFlowed(grid, cell.hasShip)
-						return 'C'
-					return 'T'
-				else
-					return 'O'
+# findCellFromGrid = (grid, cellLabel) ->
+# 	for column in grid
+# 		for cell in column
+# 			if cell.label is cellLabel
+# 				if cell.hasShip
+# 					# change state of cell
+# 					cell.state = 'T'
+# 					if isFlowed(grid, cell.hasShip)
+# 						return 'C'
+# 					return 'T'
+# 				else
+# 					return 'O'
 
 # TP
-isFlowed = (grid, shipId) ->
-	# la taille que prend un bateau est dans son nom (ship2 prend 2 cases)
-	n = shipId.split('ship')[1]
-	for column in grid
-		for cell in column
-			if cell.hasShip is shipId and cell.state is 'T'
-				n = n - 1
-			if n == 0
-				return true
-	return false
+# isFlowed = (grid, shipId) ->
+# 	# la taille que prend un bateau est dans son nom (ship2 prend 2 cases)
+# 	n = shipId.split('ship')[1]
+# 	for column in grid
+# 		for cell in column
+# 			if cell.hasShip is shipId and cell.state is 'T'
+# 				n = n - 1
+# 			if n == 0
+# 				return true
+# 	return false
 
 getEnemy = (pseudo) ->
 	room = getRoomFromPseudo(pseudo)
 	return if room.player1.id is pseudo then room.player2.id else room.player1.id
 
 # TP
-getResultFromTarget = (targetCell, room, shooter, socket) ->
-	targetPlayer = getOtherPlayerFromPlayerId(room, shooter)
-	targetGrid = targetPlayer.grid
-	result = findCellFromGrid(targetGrid, targetCell)
-	socket.emit('resultShoot', { result, cell: targetCell })
-	targetPlayer.socket.emit('canPlay')
+# getResultFromTarget = (targetCell, room, shooter, socket) ->
+# 	targetPlayer = getOtherPlayerFromPlayerId(room, shooter)
+# 	targetGrid = targetPlayer.grid
+# 	result = findCellFromGrid(targetGrid, targetCell)
+# 	socket.emit('resultShoot', { result, cell: targetCell })
+# 	targetPlayer.socket.emit('canPlay')
 
 # getPlayerFromId = (playerId) ->
 # 	for room in rooms
@@ -138,9 +138,9 @@ io.sockets.on('connection', (socket) ->
 		sendEnemy(pseudo)
 		putGridForPlayer(pseudo, shipsPositions.cells)
 	# TP
-	socket.on 'selectedCell', (selectedCell) ->
-		room = getRoomFromPseudo selectedCell.pseudo
-		getResultFromTarget selectedCell.cell, room, selectedCell.pseudo, socket
+	# socket.on 'selectedCell', (selectedCell) ->
+	# 	room = getRoomFromPseudo selectedCell.pseudo
+	# 	getResultFromTarget selectedCell.cell, room, selectedCell.pseudo, socket
 	socket.on 'disconnect', () ->
 		console.log 'Socket disconnected from server'
 		removeRoom(socket.id)

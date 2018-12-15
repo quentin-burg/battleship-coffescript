@@ -19,4 +19,23 @@ A présent vous pouvez commencer à implémenter le jeu. Vous devez alors:
 
 
 ### Partie 2
+Maintenant que vous avez commencé à prendre en main la syntaxe de CoffeeScript, on va pouvoir passer aux choses sérieuses...
+On vous propose donc d'écrire le code du jeu de la bataille navale. Pour ceux qui ne connaîtraient pas le principe de ce jeu, il consiste à tenter de couler la flotte adverse avant que votre adversaire n'ai coulé la vôtre. 
 
+Bon, comme on est gentils, on a écrit la plupart du code mais il reste cependant quelques blancs à combler.
+Le code que l'on vous a fourni vous permet de vous connecter, de placer vos bateaux mais il ne vous permet pas de jouer. Ça va être à vous gérer cette partie afin de pouvoir défier vos collègues! ;-) 
+
+#### Question 3
+La première chose à gérer est le tir d'un missile dans la fonction **update** du fichier **play.coffee**.
+N'hésitez pas à parcourir les fonctions du fichier, certaines vous seront surement utiles.
+L'évènement *mouse.isDown* vous permet de savoir lorsqu'un clic a été fait sur la page. 
+Afin de récupérer les coordonnées de la souris, vous disposez des attributs *mouse.positionDown.x* et *mouse.positionDown.y*. 
+Vous devez alors: 
+    - Vérifier si les coordonnées du clic correspondent à une case de la grille et que le joueur était autorisé à jouer
+    - Si c'est le cas il faut récupérer et stocker la case correspondant aux coordonnées du clic
+    - Dessiner le missile en utilisant la fonction *game.add.sprite(x,y,{nom de l'image})* et stocker le tout dans une variable appelée *sprite* déclarée plus haut. (Cela nous permettra ensuite de l'effacer quand on dessinera le résultat). **On vous conseille de soustraire 40 aux coordonnées x et y du clic afin que le dessin soit centré au milieu de la case.**
+    - Changer la taille de l'image à 80x80 en utilisant les attributs *width* et *height* de la valeur stockée précedemment.
+    - Ne plus autoriser le joueur à jouer. 
+    - Emettre la case sélectionnée et stockée précedemment ainsi que le pseudo au serveur via la socket. (On vous conseille d'utiliser un objet afin de pouvoir traiter les informations plus facilement côté serveur)
+
+#### Question 4
