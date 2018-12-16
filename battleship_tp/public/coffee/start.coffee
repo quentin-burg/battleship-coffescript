@@ -14,9 +14,8 @@ window.startState = {
 
 
 	create: () ->
-		# TODO : Fix nameLabel display
 		nameLabel = game.add.text(80, 80, 'BattleShip', { font: '50px Arial', fill: '#000000' })
-		pseudo = prompt('Votre nom')
+		pseudo = prompt 'Votre nom'
 		window.pseudo = pseudo
 		# on transmet au serveur le pseudo du joueur
 		socket.emit 'pseudo', pseudo

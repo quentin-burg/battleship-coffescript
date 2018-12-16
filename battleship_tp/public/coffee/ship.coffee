@@ -1,8 +1,4 @@
 # Placer les bateaux
-
-# TODO : placer des bateaux à plusieurs cases et choisir dans quel sens les mettre
-# TODO : pouvoir changer de sens les bateaux avant de les placer (horizontal ou vertical)
-
 window.nbCases = 6
 
 alphabet = ['A', 'B', 'C', 'D', 'E', 'F','G','H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -18,7 +14,6 @@ posXShip3 = 400
 error = false
 
 createGrid = () ->
-	# TO FIX : améliorer la boucle
 	for i in [0 .. nbCases - 1]
 		do (i) ->
 		temp = []
@@ -34,7 +29,6 @@ createGrid = () ->
 
 drawGrid = (graphics) ->
 	style = { font: "20px Arial", fill: "#808080", align: "center" }
-	# TO FIX : améliorer la boucle
 	for i in [0..nbCases - 1]
 		do (i) ->
 		for j in [0..nbCases - 1]
@@ -44,10 +38,6 @@ drawGrid = (graphics) ->
 				(j * (800 / nbCases)) + height / 2, cases[i][j].label, style)
 
 drawShip = (posX, posY, width, height, name, group) ->
-  # cases.forEach(( c ) ->
-  #   if (c.x <= mouseX and mouseX < c.x + width) and (c.y <= mouseY and mouseY < c.y + height)
-  #     ship = game.add.sprite(c.x + (width / 2), c.y + (height  / 2), 'ship').anchor.set(0.5)
-  # )
 	shipDrag = group.create(posX, posY, name)
 	shipDrag.width = width
 	shipDrag.height = height
@@ -105,7 +95,6 @@ handleClick = () ->
 		if (not error)
 			# on lance l'état suivant du jeu : la bataille
 			game.state.start('play')
-		# TO FIX : transformer en objet et retirer window
 		socket.emit 'shipsPositions', { pseudo: pseudo, cells: cases }
 
 window.shipState = {

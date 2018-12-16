@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "coffee -c public/*.coffee && coffee -c *.coffee",
-    "start": "npm run compile && node index.js"
+    "start": "npm run compile && node index.js",
+    "dev:server": "coffee -o js/ -cw coffee/",
+    "dev:client": "coffee -o **/js/ -cw **/coffee/",
+    "dev":"nodemon js/index.js"
   },
   "author": "",
   "license": "ISC",

@@ -70,14 +70,6 @@ isACell = (x, y) ->
 	573 < x < 620 or 700 < x < 760) and (40 < y < 93 or 173 < y < 226 or
 	300 < y < 360 or 440 < y < 497 or 573 < y < 620 or 700 < y < 760)
 
-#Question 9
-drawResultShoot = (x, y, result) ->
-	sprite.destroy()
-	resSprite = game.add.sprite(x, y, result)
-	resSprite.width = 80
-	resSprite.height = 80
-#Question 9
-
 window.playState = {
 	preload: () ->
 		console.log 'play preload'
@@ -87,47 +79,22 @@ window.playState = {
 		# C'est ton tour !
 		socket.on 'canPlay', () ->
 			canPlay = true
-		#Question 10
-		mouse = game.input.mousePointer
-		event = socket.on 'resultShoot', (resultShoot) ->
-			coordinates = getCoordinatesByCell resultShoot.cell
-			x = coordinates.x
-			y = coordinates.y
-			if resultShoot.result is "O"
-				drawResultShoot(x, y, 'water')
-			else if resultShoot.result is "T"
-				drawResultShoot(x, y, 'explosion')
-			else if resultShoot.result is "C"
-				drawResultShoot(x, y, 'wreckship')
-				if !(resultShoot.cell in touchedShips)
-					window.touchedShips.push(resultShoot.cell)
-					if (window.touchedShips.length is 3)
-						game.state.start('end')
-			canPlay = false
-		#Question 10
 
-		#Question 3
-		if (mouse.isDown)
-			if (isACell(mouse.positionDown.x, mouse.positionDown.y) and canPlay)
-				selectedCell = getCellByCoordinates(mouse.positionDown.x, mouse.positionDown.y)
-				missile = game.add.sprite(mouse.positionDown.x - 40, mouse.positionDown.y - 40, 'missile')
-				sprite = missile
-				missile.width = 80
-				missile.height = 80
-				canPlay = false
-				socket.emit 'selectedCell', { pseudo: pseudo, cell: selectedCell }
-		#Question 3
 
-	# TP
+		#### QUESTION 3 ####
+
+
+
+		#### QUESTION 10 ####
+
+
 	create: () ->
 		socket.on('readyToPlay', (enemy) ->
 			game.add.text(900, 400, "Vous jouez contre " + enemy)
 		)
 		socket.on 'disconnected', () ->
-			console.log('disconnected PLAY state')
-			# socket.emit('disconnectFromClient', pseudo)
+			console.log('Socket client disconnected')
 		socket.on 'endOfGame', () ->
-			console.log('end of game')
 			game.state.start('end')
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)
