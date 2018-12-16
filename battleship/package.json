@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "coffee -c public/*.coffee && coffee -c *.coffee",
-    "start": "npm run compile && node index.js",
+    "compile": "coffee -o public/js/ -c public/coffee/*.coffee && coffee -o js/ -c coffee/*.coffee",
+    "start": "npm run compile && node js/index.js",
     "dev:server": "coffee -o js/ -cw coffee/",
     "dev:client": "coffee -o **/js/ -cw **/coffee/",
-    "dev":"nodemon js/index.js"
+    "dev": "nodemon js/index.js",
+    "clean": "rm -rf node_modules && rm js/* && rm public/js/*"
   },
   "author": "",
   "license": "ISC",

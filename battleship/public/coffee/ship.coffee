@@ -5,7 +5,7 @@
 
 window.nbCases = 6
 
-alphabet = ['A', 'B', 'C', 'D', 'E', 'F','G','H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 window.cases = []
 window.width = 800 / nbCases
@@ -30,7 +30,6 @@ createGrid = () ->
 			coor = { x: i * (800 / nbCases), y: j * (800 / nbCases), label, ship: '', i, j }
 			temp.push coor
 		cases.push temp
-	console.log cases
 
 drawGrid = (graphics) ->
 	style = { font: "20px Arial", fill: "#808080", align: "center" }
@@ -44,10 +43,6 @@ drawGrid = (graphics) ->
 				(j * (800 / nbCases)) + height / 2, cases[i][j].label, style)
 
 drawShip = (posX, posY, width, height, name, group) ->
-  # cases.forEach(( c ) ->
-  #   if (c.x <= mouseX and mouseX < c.x + width) and (c.y <= mouseY and mouseY < c.y + height)
-  #     ship = game.add.sprite(c.x + (width / 2), c.y + (height  / 2), 'ship').anchor.set(0.5)
-  # )
 	shipDrag = group.create(posX, posY, name)
 	shipDrag.width = width
 	shipDrag.height = height
@@ -105,7 +100,6 @@ handleClick = () ->
 		if (not error)
 			# on lance l'état suivant du jeu : la bataille
 			game.state.start('play')
-		# TO FIX : transformer en objet et retirer window
 		socket.emit 'shipsPositions', { pseudo: pseudo, cells: cases }
 
 window.shipState = {
