@@ -70,6 +70,14 @@ isACell = (x, y) ->
 	573 < x < 620 or 700 < x < 760) and (40 < y < 93 or 173 < y < 226 or
 	300 < y < 360 or 440 < y < 497 or 573 < y < 620 or 700 < y < 760)
 
+#Question 9
+drawResultShoot = (x, y, result) ->
+	sprite.destroy()
+	resSprite = game.add.sprite(x, y, result)
+	resSprite.width = 80
+	resSprite.height = 80
+#Question 9
+
 window.playState = {
 	preload: () ->
 		console.log 'play preload'
@@ -79,32 +87,24 @@ window.playState = {
 		# C'est ton tour !
 		socket.on 'canPlay', () ->
 			canPlay = true
-
+		#Question 10
 		mouse = game.input.mousePointer
-		# event = socket.on 'resultShoot', (resultShoot) ->
-		# 	coordinates = getCoordinatesByCell resultShoot.cell
-		# 	x = coordinates.x
-		# 	y = coordinates.y
-		# 	if resultShoot.result is "O"
-		# 		sprite.destroy()
-		# 		water = game.add.sprite(x, y, 'water')
-		# 		water.width = 80
-		# 		water.height = 80
-		# 	else if resultShoot.result is "T"
-		# 		sprite.destroy()
-		# 		explosion = game.add.sprite(x, y, 'explosion')
-		# 		explosion.width = 80
-		# 		explosion.height = 80
-		# 	else if resultShoot.result is "C"
-		# 		sprite.destroy()
-		# 		wreckship = game.add.sprite(x, y, 'wreckship')
-		# 		wreckship.width = 80
-		# 		wreckship.height = 80
-		# 		if !(resultShoot.cell in touchedShips)
-		# 			window.touchedShips.push(resultShoot.cell)
-		# 			if (window.touchedShips.length is 3)
-		# 				game.state.start('end')
-		# 	canPlay = false
+		event = socket.on 'resultShoot', (resultShoot) ->
+			coordinates = getCoordinatesByCell resultShoot.cell
+			x = coordinates.x
+			y = coordinates.y
+			if resultShoot.result is "O"
+				drawResultShoot(x, y, 'water')
+			else if resultShoot.result is "T"
+				drawResultShoot(x, y, 'explosion')
+			else if resultShoot.result is "C"
+				drawResultShoot(x, y, 'wreckship')
+				if !(resultShoot.cell in touchedShips)
+					window.touchedShips.push(resultShoot.cell)
+					if (window.touchedShips.length is 3)
+						game.state.start('end')
+			canPlay = false
+		#Question 10
 
 		#Question 3
 		if (mouse.isDown)
