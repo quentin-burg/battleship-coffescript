@@ -1,6 +1,6 @@
 # TP CoffeeScript 
 
-##Quentin Burg, Alexia Omietanski
+## Quentin Burg, Alexia Omietanski
 
 ### Première partie
 Le but de cette première partie est de vous familiariser avec la syntaxe de CoffeeScript. 
@@ -22,7 +22,7 @@ Maintenant que vous avez commencé à prendre en main la syntaxe de CoffeeScript
 On vous propose donc d'écrire le code du jeu de la bataille navale. Pour ceux qui ne connaîtraient pas le principe de ce jeu, il consiste à tenter de couler la flotte adverse avant que votre adversaire n'ai coulé la vôtre. 
 
 Bon, comme on est gentils, on a écrit la plupart du code mais il reste cependant quelques blancs à combler.
-Le code que l'on vous a fourni vous permet de vous connecter, de placer vos bateaux mais il ne vous permet pas de jouer. Ça va être à vous de gérer cette partie afin de pouvoir défier vos collègues! ;-) 
+Le code que l'on vous a fourni vous permet de vous connecter, de placer vos bateaux mais il ne vous permet pas de jouer. Ça va être à vous de gérer cette partie afin de pouvoir défier vos collègues! 😉
 
 #### Question 3
 La première chose à gérer est le tir d'un missile dans la fonction **update** du fichier **play.coffee**.
@@ -118,4 +118,4 @@ De plus, il faut tester si tous les bateaux sont coulés afin de détecter la fi
 ⚠️  Attention, la fonction **update** est appelée plusieurs fois à la suite, faites bien attention à n'ajouter qu'une seule fois les bateaux, sinon vous n'aurez jamais le bon résultat... ⚠️
 
 Voilà, c'est terminé. 🎉 
-Vous avez réussi le challenge et vous pouvez à présent vous amuser avec votre jeu **Bataille Navale**. :-D
+Vous avez réussi le challenge et vous pouvez à présent vous amuser avec votre jeu **Bataille Navale**. 😄
