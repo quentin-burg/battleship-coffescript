@@ -139,7 +139,7 @@ io.sockets.on('connection', (socket) ->
 	socket.on 'gameFinished', (pseudo) ->
 		room = getRoomFromPseudo(pseudo)
 		otherSocket = getOtherPlayerFromPlayerId(room, pseudo).socket
-		otherSocket.emit 'endOfGame'
+		otherSocket.emit 'endOfGame', pseudo
 	socket.on 'disconnect', () ->
 		console.log 'Socket disconnected from server'
 		removeRoom(socket.id)
