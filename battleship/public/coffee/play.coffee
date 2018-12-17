@@ -84,9 +84,6 @@ window.playState = {
 
 	# TP
 	update: () ->
-		# C'est ton tour !
-		socket.on 'canPlay', () ->
-			canPlay = true
 		#Question 10
 		mouse = game.input.mousePointer
 		event = socket.on 'resultShoot', (resultShoot) ->
@@ -121,6 +118,10 @@ window.playState = {
 		#Question 3
 
 	create: () ->
+		# C'est ton tour !
+		socket.on 'canPlay', () ->
+			canPlay = true
+			alert 'C\'est ton tour !'
 		socket.on 'readyToPlay', (enemy) ->
 			game.add.text(900, 400, "Vous jouez contre " + enemy)
 		socket.on 'disconnected', () ->
