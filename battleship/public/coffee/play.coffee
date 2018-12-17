@@ -102,6 +102,7 @@ window.playState = {
 				if !(resultShoot.cell in touchedShips)
 					window.touchedShips.push(resultShoot.cell)
 					if (window.touchedShips.length is 3)
+						socket.emit 'gameFinished', pseudo
 						game.state.start('end')
 			canPlay = false
 		#Question 10
