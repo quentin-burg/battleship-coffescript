@@ -84,9 +84,6 @@ window.playState = {
 
 	# TP
 	update: () ->
-		# C'est ton tour !
-		socket.on 'canPlay', () ->
-			canPlay = true
 		#Question 10
 		mouse = game.input.mousePointer
 		event = socket.on 'resultShoot', (resultShoot) ->
@@ -102,6 +99,8 @@ window.playState = {
 				if !(resultShoot.cell in touchedShips)
 					window.touchedShips.push(resultShoot.cell)
 					if (window.touchedShips.length is 3)
+						socket.emit 'gameFinished', pseudo
+						window.winner = pseudo
 						game.state.start('end')
 			canPlay = false
 		#Question 10
@@ -119,11 +118,16 @@ window.playState = {
 		#Question 3
 
 	create: () ->
+		# C'est ton tour !
+		socket.on 'canPlay', () ->
+			canPlay = true
+			alert 'C\'est ton tour !'
 		socket.on 'readyToPlay', (enemy) ->
 			game.add.text(900, 400, "Vous jouez contre " + enemy)
 		socket.on 'disconnected', () ->
 			console.log('Socket client disconnected')
-		socket.on 'endOfGame', () ->
+		socket.on 'endOfGame', (winner) ->
+			window.winner = winner
 			game.state.start('end')
 		graphics = game.add.graphics()
 		graphics.lineStyle(2, 0xAAAAAA, 1)

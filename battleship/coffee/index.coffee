@@ -136,6 +136,10 @@ io.sockets.on('connection', (socket) ->
 	socket.on 'selectedCell', (selectedCell) -> #Question 4
 		room = getRoomFromPseudo selectedCell.pseudo #Question 5
 		getResultFromTarget selectedCell.cell, room, selectedCell.pseudo, socket #Question 8
+	socket.on 'gameFinished', (pseudo) ->
+		room = getRoomFromPseudo(pseudo)
+		otherSocket = getOtherPlayerFromPlayerId(room, pseudo).socket
+		otherSocket.emit 'endOfGame', pseudo
 	socket.on 'disconnect', () ->
 		console.log 'Socket disconnected from server'
 		removeRoom(socket.id)
